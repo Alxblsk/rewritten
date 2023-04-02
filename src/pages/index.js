@@ -1,122 +1,103 @@
 import * as React from "react"
-import { Link } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
+import get from 'lodash/get';
+import classNames from 'classnames';
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import * as styles from "../components/index.module.css"
 
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-  },
-  {
-    text: "Examples",
-    url: "https://github.com/gatsbyjs/gatsby/tree/master/examples",
-    description:
-      "A collection of websites ranging from very basic to complex/complete that illustrate how to accomplish specific tasks within your Gatsby sites.",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Learn how to add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-  },
-]
 
-const samplePageLinks = [
-  {
-    text: "Page 2",
-    url: "page-2",
-    badge: false,
-    description:
-      "A simple example of linking to another page within a Gatsby site",
-  },
-  { text: "TypeScript", url: "using-typescript" },
-  { text: "Server Side Rendering", url: "using-ssr" },
-  { text: "Deferred Static Generation", url: "using-dsg" },
-]
+import { getBlogPostDate } from '../components/utils/meta';
 
-const moreLinks = [
-  { text: "Join us on Discord", url: "https://gatsby.dev/discord" },
-  {
-    text: "Documentation",
-    url: "https://gatsbyjs.com/docs/",
-  },
-  {
-    text: "Starters",
-    url: "https://gatsbyjs.com/starters/",
-  },
-  {
-    text: "Showcase",
-    url: "https://gatsbyjs.com/showcase/",
-  },
-  {
-    text: "Contributing",
-    url: "https://www.gatsbyjs.com/contributing/",
-  },
-  { text: "Issues", url: "https://github.com/gatsbyjs/gatsby/issues" },
-]
+import './index.scss';
 
-const utmParameters = `?utm_source=starter&utm_medium=start-page&utm_campaign=default-starter`
+const IS_TIMELINE_FOR_YEARS = 5;
 
-const IndexPage = () => (
-  <Layout>
-    <div className={styles.textCenter}>
-      <StaticImage
-        src="../images/example.png"
-        loading="eager"
-        width={64}
-        quality={95}
-        formats={["auto", "webp", "avif"]}
-        alt=""
-        style={{ marginBottom: `var(--space-3)` }}
-      />
-      <h1>
-        Welcome to <b>Gatsby!</b>
-      </h1>
-      <p className={styles.intro}>
-        <b>Example pages:</b>{" "}
-        {samplePageLinks.map((link, i) => (
-          <React.Fragment key={link.url}>
-            <Link to={link.url}>{link.text}</Link>
-            {i !== samplePageLinks.length - 1 && <> · </>}
-          </React.Fragment>
-        ))}
-        <br />
-        Edit <code>src/pages/index.js</code> to update this page.
-      </p>
+function isBelarusPost({ node }) {
+  const tags = get(node, 'frontmatter.tags') || '';
+  return tags.toLowerCase().includes('беларусь');
+}
+
+function isTimelinePost({ node }) {
+  const currentDate = new Date();
+  const date = new Date(get(node, 'frontmatter.date'));
+  return (
+    currentDate.getFullYear() - date.getFullYear() <= IS_TIMELINE_FOR_YEARS
+  );
+}
+
+function getPostsSorted(posts = []) {
+  return posts.reduce(
+    (acc, post) => {
+      if (isTimelinePost(post)) {
+        acc.timeline.push(post);
+        return acc;
+      }
+
+      acc.archive.push(post);
+      return acc;
+    },
+    { belarus: [], timeline: [], archive: [] }
+  );
+}
+
+function Section({ posts, sectionTitle, theme }) {
+  return (
+    <div className={classNames('posts-section', theme)}>
+      <h2 className="posts-section-title">{sectionTitle}</h2>
+      <div className="post-feed">
+        {posts.map((post) => {
+          const {node} = post;
+          const title = get(node, 'frontmatter.title') || node.fields.slug;
+          const src = get(
+            node,
+            'frontmatter.image.childImageSharp.resolutions.src',
+            ''
+          );
+          const date = getBlogPostDate(node.frontmatter);
+          return (
+            <article key={node.fields.slug} className={classNames("post-card post", isBelarusPost(post) && 'tag-belarus')}>
+              <div className="post-card-content">
+                <Link to={node.fields.slug} className="post-card-content-link">
+                  <header className="post-card-header">
+                    <h3 className="post-card-title">{title}</h3>
+                    <small className="post-card-date">{date}</small>
+                  </header>
+                  <section className="post-card-excerpt">
+                    <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+                  </section>
+                </Link>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </div>
-    <ul className={styles.list}>
-      {links.map(link => (
-        <li key={link.url} className={styles.listItem}>
-          <a
-            className={styles.listItemLink}
-            href={`${link.url}${utmParameters}`}
-          >
-            {link.text} ↗
-          </a>
-          <p className={styles.listItemDescription}>{link.description}</p>
-        </li>
-      ))}
-    </ul>
-    {moreLinks.map((link, i) => (
-      <React.Fragment key={link.url}>
-        <a href={`${link.url}${utmParameters}`}>{link.text}</a>
-        {i !== moreLinks.length - 1 && <> · </>}
-      </React.Fragment>
-    ))}
-  </Layout>
-)
+  );
+}
+
+const IndexPage = (props) => {
+  const siteMeta = get(props, 'data.site.siteMetadata', {});
+  const { title: siteTitle, siteUrl } = siteMeta;
+  const posts = get(props, 'data.allMdx.edges');
+
+  const sortedPosts = getPostsSorted(posts);
+
+  return (
+    <Layout>
+      <div className="home-template">
+        <Section
+          posts={sortedPosts.timeline}
+          sectionTitle="Стужка"
+          theme="detailed"
+        />
+        <Section posts={sortedPosts.archive} sectionTitle="Архіў" />
+      </div>
+    </Layout>
+  )
+}
 
 /**
  * Head export to define metadata for the page
@@ -126,3 +107,29 @@ const IndexPage = () => (
 export const Head = () => <Seo title="Home" />
 
 export default IndexPage
+
+export const pageQuery = graphql`
+query IndexQuery {
+  site {
+    siteMetadata {
+      title
+      siteUrl
+    }
+  }
+  allMdx(sort: {frontmatter: {date: DESC}}) {
+    edges {
+      node {
+        excerpt(pruneLength: 280)
+        fields {
+          slug
+        }
+        frontmatter {
+          date(formatString: "YYYY-MM-DDTHH:mm:ss.sssZ")
+          title
+          tags
+        }
+      }
+    }
+  }
+}
+`;
