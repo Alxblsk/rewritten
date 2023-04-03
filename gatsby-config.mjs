@@ -218,6 +218,30 @@ const config = {
         },
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `./src/locales`,
+        name: `locale`
+      }
+    },
+    {
+      resolve: `gatsby-plugin-react-i18next`,
+      options: {
+        localeJsonSourceName: `locale`,
+        languages: [`be`],
+        defaultLanguage: `be`,
+        siteUrl: `http://localhost:8000/`,
+        i18nextOptions: {
+          interpolation: {
+            escapeValue: false 
+          },
+          keySeparator: false,
+          nsSeparator: false
+        },
+        pages: []
+      }
+    }
   ]
 }
 

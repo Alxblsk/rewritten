@@ -1,17 +1,21 @@
 import React from 'react'
+import get from 'lodash/get'
 import { graphql, Link } from 'gatsby'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import get from 'lodash/get'
+
 import Layout from "../components/layout"
 //import { BlogPostMeta } from '../components/seo/blog-post-meta';
 import { getBlogPostDate } from '../components/utils/meta';
+
 
 import './blog-post.scss'
 
 function BlogPostTemplate(props) {
   const { data, pageContext, children } = props
   const { previous, next, slug, frontmatter } = pageContext
-  const post = data.mdx
+  const post = data.mdx;
+  const translations = JSON.parse(data.locale.data);
+
 
   const siteMeta = get(data, 'site.siteMetadata', {})
   const { siteUrl, title } = siteMeta;
@@ -26,13 +30,15 @@ function BlogPostTemplate(props) {
         <span className="date">{getBlogPostDate(frontmatter)}</span>
       </div>
       
-      {featuredImg && <GatsbyImage image={featuredImg} />}
+      {featuredImg && <GatsbyImage image={featuredImg} alt={frontmatter.title} />}
 
       <div className="post">{children}</div>
 
       {(previous || next) ? (
         <div className="related-articles">
-          <h4 className="paginator-title">Далее</h4>
+          <h4 className="paginator-title">
+            {translations["blog.post.below.more"]}
+          </h4>
           <ul className="paginator">
             {previous && (
               <li>
@@ -50,7 +56,7 @@ function BlogPostTemplate(props) {
             )}
             <li>
               <Link to={'/'} rel="home">
-                На главную
+                {translations["blog.post.main"]}
               </Link>
             </li>
           </ul>
@@ -91,6 +97,9 @@ export const pageQuery = graphql`
           }
         }
       }
+    }
+    locale(language: {eq: "be"}) {
+      data
     }
   }
 `

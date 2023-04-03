@@ -82,7 +82,7 @@ const IndexPage = (props) => {
   const siteMeta = get(props, 'data.site.siteMetadata', {});
   const { title: siteTitle, siteUrl } = siteMeta;
   const posts = get(props, 'data.allMdx.edges');
-
+  const translations = JSON.parse(get(props, "data.locale.data", null));
   const sortedPosts = getPostsSorted(posts);
 
   return (
@@ -90,10 +90,10 @@ const IndexPage = (props) => {
       <div className="home-template">
         <Section
           posts={sortedPosts.timeline}
-          sectionTitle="Стужка"
+          sectionTitle={translations["blog.home.timeline"]}
           theme="detailed"
         />
-        <Section posts={sortedPosts.archive} sectionTitle="Архіў" />
+        <Section posts={sortedPosts.archive} sectionTitle={translations["blog.home.archive"]} />
       </div>
     </Layout>
   )
@@ -130,6 +130,9 @@ query IndexQuery {
         }
       }
     }
+  }
+  locale(language: {eq: "be"}) {
+    data
   }
 }
 `;
