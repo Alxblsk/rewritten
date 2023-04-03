@@ -188,10 +188,7 @@ const config = {
     },
     {
       resolve: 'gatsby-plugin-sitemap',
-      options: {
-        exclude: [
-        ]
-      },
+      options: { },
     },
     {
       resolve: `gatsby-plugin-google-gtag`,

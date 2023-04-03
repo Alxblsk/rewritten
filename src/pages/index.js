@@ -29,7 +29,7 @@ function isTimelinePost({ node }) {
 }
 
 function getPostsSorted(posts = []) {
-  return posts.reduce(
+  const allPosts =  posts.reduce(
     (acc, post) => {
       if (isTimelinePost(post)) {
         acc.timeline.push(post);
@@ -41,6 +41,15 @@ function getPostsSorted(posts = []) {
     },
     { belarus: [], timeline: [], archive: [] }
   );
+
+  [allPosts.timeline, allPosts.belarus, allPosts.archive].forEach(group => {
+    return group.sort((a, b) => {
+      console.log('b', b);
+      return new Date(b.node.frontmatter.date) - new Date(a.node.frontmatter.date);
+    })
+  })
+
+  return allPosts;
 }
 
 function Section({ posts, sectionTitle, theme }) {
