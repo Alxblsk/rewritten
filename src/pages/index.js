@@ -1,12 +1,10 @@
 import * as React from "react"
 import { graphql, Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
 import get from 'lodash/get';
 import classNames from 'classnames';
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import * as styles from "../components/index.module.css"
 
 
 import { getBlogPostDate } from '../components/utils/meta';
@@ -29,7 +27,11 @@ function isTimelinePost({ node }) {
 }
 
 function getPostsSorted(posts = []) {
-  const allPosts =  posts.reduce(
+  posts.sort((a, b) => {
+    return new Date(b.node.frontmatter.date) - new Date(a.node.frontmatter.date);
+  })
+
+  return posts.reduce(
     (acc, post) => {
       if (isTimelinePost(post)) {
         acc.timeline.push(post);
@@ -41,15 +43,6 @@ function getPostsSorted(posts = []) {
     },
     { belarus: [], timeline: [], archive: [] }
   );
-
-  [allPosts.timeline, allPosts.belarus, allPosts.archive].forEach(group => {
-    return group.sort((a, b) => {
-      console.log('b', b);
-      return new Date(b.node.frontmatter.date) - new Date(a.node.frontmatter.date);
-    })
-  })
-
-  return allPosts;
 }
 
 function Section({ posts, sectionTitle, theme }) {
@@ -65,14 +58,13 @@ function Section({ posts, sectionTitle, theme }) {
             'frontmatter.image.childImageSharp.resolutions.src',
             ''
           );
-          const date = getBlogPostDate(node.frontmatter);
           return (
             <article key={node.fields.slug} className={classNames("post-card post", isBelarusPost(post) && 'tag-belarus')}>
               <div className="post-card-content">
                 <Link to={node.fields.slug} className="post-card-content-link">
                   <header className="post-card-header">
                     <h3 className="post-card-title">{title}</h3>
-                    <small className="post-card-date">{date}</small>
+                    <small className="post-card-date">{getBlogPostDate(node.frontmatter)}</small>
                   </header>
                   <section className="post-card-excerpt">
                     <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
