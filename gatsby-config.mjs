@@ -119,11 +119,19 @@ const config = {
           },
           }) => {
               const { site_url } = siteMetadata;
+              const atomLink = `atom:link href="${site_url}/rss.xml" rel="self" type="application/rss+xml"`;
               return {
                   ...siteMetadata,
                   image_url: `${site_url}${logo_url}`,
                   ...rest,
-                  custom_namespaces: { "source": "http://source.scripting.com/" },
+                  custom_namespaces: { 
+                    "source": "http://source.scripting.com/"
+                  },
+                  custom_elements: [
+                    {
+                      [atomLink]: null,
+                    },
+                  ],
               }
           },
         feeds: [
@@ -136,11 +144,11 @@ const config = {
                 const { frontmatter, title, date, excerpt, fields, body } = node;
                 let enclosure = null;
                 
-                if (frontmatter?.image?.childImageSharp?.fixed?.srcWebp) {
+                if (frontmatter?.image?.childImageSharp?.fixed?.src) {
                   enclosure = {
-                    url: siteUrl + frontmatter.image.childImageSharp.fixed.srcWebp,
+                    url: siteUrl + frontmatter.image.childImageSharp.fixed.src,
                     //size: 0,
-                    type: 'image/webp'
+                    type: 'image/jpeg'
                   }
                 }
 
@@ -171,7 +179,7 @@ const config = {
                         image {
                           childImageSharp {
                             fixed {
-                              srcWebp
+                              src
                             }
                           }
                         }
