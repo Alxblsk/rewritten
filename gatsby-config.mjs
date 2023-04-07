@@ -141,7 +141,7 @@ const config = {
               const { siteUrl } = site.siteMetadata;
 
               return nodes.map((node) => {
-                const { frontmatter, title, date, excerpt, fields, body } = node;
+                const { frontmatter, excerpt, fields, body } = node;
                 let enclosure = null;
                 
                 if (frontmatter?.image?.childImageSharp?.fixed?.src) {
@@ -151,6 +151,8 @@ const config = {
                     type: 'image/jpeg'
                   }
                 }
+
+                const { title, date } = frontmatter;
 
                 //console.log(node.fields.slug, file.publicURL);
                 return Object.assign({}, {
