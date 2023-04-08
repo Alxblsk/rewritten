@@ -30,6 +30,8 @@ export const BlogPostMeta = function ({ post, meta }) {
       <meta property="profile:last_name" content={meta.lastName} />
       <meta property="profile:username" content={meta.username} />
 
+      <meta name="robots" content="all" />
+
       <link rel="canonical" href={postUrl}></link>
       <link rel="alternate" type="application/rss+xml" title={meta.title} href="/rss.xml" />
     </Helmet>

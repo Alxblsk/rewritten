@@ -12,7 +12,7 @@ const username = 'alxblsk';
 const siteMetadata = {
   title: `${lastName}`,
   author: `${firstName} ${lastName}`,
-  description: '',
+  description: 'Уласны закуток',
   siteUrl: 'https://belski.page',
   username,
   firstName,

@@ -88,6 +88,7 @@ const IndexPage = (props) => {
       <div className="home-template">
         <Helmet title={siteTitle} htmlAttributes={{ lang: 'be' }}>
           <link rel="canonical" href={`${siteUrl}/`}></link>
+          <meta name="robots" content="all" />
         </Helmet>
         <Section
           posts={sortedPosts.timeline}
@@ -118,6 +119,7 @@ query IndexQuery {
     siteMetadata {
       title
       siteUrl
+      description
     }
   }
   allMdx(sort: {frontmatter: {date: DESC}}) {
