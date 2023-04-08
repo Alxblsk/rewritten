@@ -154,7 +154,6 @@ const config = {
 
                 const { title, date } = frontmatter;
 
-                //console.log(node.fields.slug, file.publicURL);
                 return Object.assign({}, {
                   title,
                   description: excerpt,

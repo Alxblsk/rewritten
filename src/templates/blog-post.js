@@ -4,7 +4,7 @@ import { graphql, Link } from 'gatsby'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
-//import { BlogPostMeta } from '../components/seo/blog-post-meta';
+import { BlogPostMeta } from '../components/seo/blog-post-meta';
 import { getBlogPostDate } from '../components/utils/meta';
 
 
@@ -64,7 +64,7 @@ function BlogPostTemplate(props) {
       ) : null
       }
 
-      {/* <BlogPostMeta post={post} meta={siteMeta} /> */}
+      <BlogPostMeta post={post} meta={siteMeta} />
     </div>
     </Layout>
   )
