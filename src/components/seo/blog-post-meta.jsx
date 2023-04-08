@@ -10,7 +10,7 @@ export const BlogPostMeta = function ({ post, meta }) {
   const postUrl = getBlogPostUrl(meta.siteUrl, postSource);
   const postTitle = `${postSource.title} || ${meta.title}`;
   const postDescription = get(post, 'excerpt', '')  // Replace later with a custom description
-  console.log(postSource, heroImage, postUrl, postTitle, postDescription, meta);
+
   return (
     <Helmet
       title={postTitle}

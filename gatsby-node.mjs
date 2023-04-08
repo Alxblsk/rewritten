@@ -3,8 +3,6 @@
  *
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
  */
-
-import each from 'lodash/foreach.js';
 import { resolve } from 'path';
 import { createFilePath } from 'gatsby-source-filesystem';
 
@@ -46,7 +44,7 @@ export async function createPages({ graphql, actions }) {
     // Create blog posts pages.
     const posts = result.data.allMdx.edges;
 
-    each(posts, (post, index) => {
+    posts.forEach((post, index) => {
       const previous = index === posts.length - 1 ? null : posts[index + 1].node;
       const next = index === 0 ? null : posts[index - 1].node;
 
