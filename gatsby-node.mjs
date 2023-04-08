@@ -4,16 +4,16 @@
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
  */
 
-const _ = require('lodash')
-const path = require('path')
-const { createFilePath } = require('gatsby-source-filesystem');
+import each from 'lodash/foreach.js';
+import { resolve } from 'path';
+import { createFilePath } from 'gatsby-source-filesystem';
 
 /**
  * @type {import('gatsby').GatsbyNode['createPages']}
  */
-exports.createPages = async ({ graphql, actions }) => {
+export async function createPages({ graphql, actions }) {
   const { createPage } = actions;
-  const blogPostTemplate = path.resolve('./src/templates/blog-post.js');
+  const blogPostTemplate = resolve('./src/templates/blog-post.js');
 
   try {
     const result = await graphql(
@@ -39,7 +39,6 @@ exports.createPages = async ({ graphql, actions }) => {
     `
     );
     if (result.errors) {
-      console.log(result.errors);
       throw Error(result.errors);
     }
 
@@ -47,7 +46,7 @@ exports.createPages = async ({ graphql, actions }) => {
     // Create blog posts pages.
     const posts = result.data.allMdx.edges;
 
-    _.each(posts, (post, index) => {
+    each(posts, (post, index) => {
       const previous = index === posts.length - 1 ? null : posts[index + 1].node;
       const next = index === 0 ? null : posts[index - 1].node;
 
@@ -62,11 +61,11 @@ exports.createPages = async ({ graphql, actions }) => {
       });
     });
   } catch (ex) {
-    console.error('ERROR!!!', ex);
+    console.error(ex);
   }
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+export function onCreateNode({ node, actions, getNode }) {
   const { createNodeField } = actions;
 
   if (node.internal.type === `Mdx`) {

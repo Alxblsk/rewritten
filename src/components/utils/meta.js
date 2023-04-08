@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 
 export function getBlogPostHero(postSource) {
-    console.log('postSource', postSource)
     const imageProps = get(postSource, 'image.childImageSharp.fixed', null);
     return imageProps || {
         src: null,

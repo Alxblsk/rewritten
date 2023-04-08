@@ -2,6 +2,7 @@ import * as React from "react"
 import { graphql, Link } from "gatsby"
 import get from 'lodash/get';
 import classNames from 'classnames';
+import Helmet from 'react-helmet';
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -53,11 +54,7 @@ function Section({ posts, sectionTitle, theme }) {
         {posts.map((post) => {
           const {node} = post;
           const title = get(node, 'frontmatter.title') || node.fields.slug;
-          const src = get(
-            node,
-            'frontmatter.image.childImageSharp.resolutions.src',
-            ''
-          );
+
           return (
             <article key={node.fields.slug} className={classNames("post-card post", isBelarusPost(post) && 'tag-belarus')}>
               <div className="post-card-content">
@@ -89,6 +86,9 @@ const IndexPage = (props) => {
   return (
     <Layout>
       <div className="home-template">
+        <Helmet title={siteTitle} htmlAttributes={{ lang: 'be' }}>
+          <link rel="canonical" href={`${siteUrl}/`}></link>
+        </Helmet>
         <Section
           posts={sortedPosts.timeline}
           sectionTitle={translations["blog.home.timeline"]}

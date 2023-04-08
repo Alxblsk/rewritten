@@ -12,13 +12,12 @@ import './blog-post.scss'
 
 function BlogPostTemplate(props) {
   const { data, pageContext, children } = props
-  const { previous, next, slug, frontmatter } = pageContext
+  const { previous, next, frontmatter } = pageContext
   const post = data.mdx;
   const translations = JSON.parse(data.locale.data);
 
 
   const siteMeta = get(data, 'site.siteMetadata', {})
-  const { siteUrl, title } = siteMeta;
 
   let featuredImg = getImage(post.frontmatter.image?.childImageSharp?.gatsbyImageData)
 

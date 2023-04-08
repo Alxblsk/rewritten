@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
             </a>
           </li>
           <li>
-            <a href="https://belski.dev" target="_blank" rel="noopener">
+            <a href="https://belski.dev" target="_blank" rel="noopener noreferrer">
               belski.dev
             </a>
           </li>
