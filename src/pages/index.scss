@@ -46,13 +46,14 @@ $posts-to-render: 5;
   }
 
   .post-card-content {
-    margin: 0 25px;
+    margin: 0 25px 10px;
     box-sizing: border-box;
   }    
 
   .post-card-content-link {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: baseline;
     white-space: nowrap;
     overflow: hidden;
@@ -62,6 +63,7 @@ $posts-to-render: 5;
 
   .post-card-excerpt {
     overflow: hidden;
+    max-width: 100%;
 
     & > p {
       padding: 0;
@@ -73,6 +75,10 @@ $posts-to-render: 5;
   }
 
   .detailed & {
+    .post-card-date {
+      display: inline-block;
+    }
+    
     &:nth-child(-n+#{$posts-to-render}) {
       margin: 20px 5px;
 
@@ -87,10 +93,6 @@ $posts-to-render: 5;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
-      }
-
-      .post-card-date {
-        display: inline-block;
       }
 
       .post-card-excerpt {
@@ -174,6 +176,70 @@ $posts-to-render: 5;
         margin: 30px 10px 0;
         padding: 0 0 30px;
         border-top: 1px solid #AAA;
+      }
+    }
+  }
+
+  .archive & {
+    .post-card-title {
+      font-size: 16px;
+
+      &:after {
+        content: '';
+      } 
+    }
+
+    .post-card-excerpt {
+      font-size: 14px;
+    }
+  }
+
+
+  @media screen and (min-width: 376px){
+    .post-card-content {
+      margin-bottom: 0;
+    }
+
+    .post-card-content-link {
+      flex-direction: row;
+    }
+
+    .post-card-title {
+      font-size: 1
+    }
+
+    .detailed & {
+      .post-card-date {
+        display: none;
+      }
+      
+      &:nth-child(-n+#{$posts-to-render}) {
+        margin: 20px 5px;
+  
+        .post-card-header {
+          margin-bottom: 5px;  
+        }
+  
+        .post-card-content-link {
+          display: block;
+          white-space: normal;
+  
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+        }
+  
+        .post-card-date {
+          display: inline-block;
+        }
+      }
+    }
+
+    .archive & {
+      .post-card-title {
+        &:after {
+          content: '/';
+        }
       }
     }
   }

@@ -94,7 +94,7 @@ const IndexPage = (props) => {
           sectionTitle={translations["blog.home.timeline"]}
           theme="detailed"
         />
-        <Section posts={sortedPosts.archive} sectionTitle={translations["blog.home.archive"]} />
+        <Section posts={sortedPosts.archive} sectionTitle={translations["blog.home.archive"]} theme="archive"/>
       </div>
     </Layout>
   )
