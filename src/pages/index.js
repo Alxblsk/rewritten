@@ -1,23 +1,15 @@
 import * as React from "react"
-import { graphql, Link } from "gatsby"
+import { graphql } from "gatsby"
 import get from 'lodash/get';
-import classNames from 'classnames';
 import Helmet from 'react-helmet';
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-
-
-import { getBlogPostDate } from '../components/utils/meta';
+import Section from '../components/section'
 
 import './index.scss';
 
 const IS_TIMELINE_FOR_YEARS = 5;
-
-function isBelarusPost({ node }) {
-  const tags = get(node, 'frontmatter.tags') || '';
-  return tags.toLowerCase().includes('беларусь');
-}
 
 function isTimelinePost({ node }) {
   const currentDate = new Date();
@@ -43,36 +35,6 @@ function getPostsSorted(posts = []) {
       return acc;
     },
     { belarus: [], timeline: [], archive: [] }
-  );
-}
-
-function Section({ posts, sectionTitle, theme }) {
-  return (
-    <div className={classNames('posts-section', theme)}>
-      <h2 className="posts-section-title">{sectionTitle}</h2>
-      <div className="post-feed">
-        {posts.map((post) => {
-          const {node} = post;
-          const title = get(node, 'frontmatter.title') || node.fields.slug;
-
-          return (
-            <article key={node.fields.slug} className={classNames("post-card post", isBelarusPost(post) && 'tag-belarus')}>
-              <div className="post-card-content">
-                <Link to={node.fields.slug} className="post-card-content-link">
-                  <header className="post-card-header">
-                    <h3 className="post-card-title">{title}</h3>
-                    <small className="post-card-date">{getBlogPostDate(node.frontmatter)}</small>
-                  </header>
-                  <section className="post-card-excerpt">
-                    <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
-                  </section>
-                </Link>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-    </div>
   );
 }
 
@@ -132,7 +94,7 @@ query IndexQuery {
         frontmatter {
           date(formatString: "YYYY-MM-DDTHH:mm:ss.sssZ")
           title
-          tags
+          tags_be
         }
       }
     }

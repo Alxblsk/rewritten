@@ -1,0 +1,43 @@
+.side-section {
+  margin-top: 15px;
+  
+  .side-section-title {
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0 0 10px;
+    padding: 0 25px;
+  }
+}
+
+.tags-list {
+    padding: 0 25px;
+    list-style-type: none;
+
+    .tags-item {
+        display: inline;
+        margin-right: 5px;
+        white-space: nowrap;
+    }
+
+    .tags-item::after {
+        display: inline-block;
+        margin-left: 3px;
+        content: attr(data-count);
+        background: rgb(167, 167, 167);
+        color: white;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 14px;
+        font-size: 10px;
+    }
+}
+
+@media screen and (min-width: 801px){
+    .tags-item {
+        display: block;
+        margin-right: 0;
+    }
+  }

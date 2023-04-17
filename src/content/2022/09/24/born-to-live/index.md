@@ -2,7 +2,7 @@
 title: Народжаныя, каб жыць
 slug:  born-to-live
 date:  "2022-09-24T22:00:00.000Z"
-tags:  расія, беларусь, украіна, думкі
+tags_be:  ["расія", "беларусь", "украіна", "думкі"]
 image: "andrew-keymaster-4IK4DlCLe6s-unsplash.jpg"
 ---
 

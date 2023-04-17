@@ -5,6 +5,9 @@
  */
 import { resolve } from 'path';
 import { createFilePath } from 'gatsby-source-filesystem';
+import Translit from 'cyrillic-to-translit-js';
+
+const translit = new Translit();
 
 /**
  * @type {import('gatsby').GatsbyNode['createPages']}
@@ -12,6 +15,7 @@ import { createFilePath } from 'gatsby-source-filesystem';
 export async function createPages({ graphql, actions }) {
   const { createPage } = actions;
   const blogPostTemplate = resolve('./src/templates/blog-post.js');
+  const tagPageTemplate = resolve('./src/templates/tag-page.js');
 
   try {
     const result = await graphql(
@@ -31,6 +35,11 @@ export async function createPages({ graphql, actions }) {
               contentFilePath
             }
           }
+        }
+      }
+      tagsBeGroup: allMdx(limit: 100) {
+        group(field: { frontmatter: { tags_be: SELECT }}) {
+          fieldValue
         }
       }
     }
@@ -58,6 +67,23 @@ export async function createPages({ graphql, actions }) {
         },
       });
     });
+
+    // Extract tag data from query
+  const tags = result.data.tagsBeGroup.group
+
+  // Make tag pages
+  tags.forEach(tag => {
+    const latinTag = translit.transform(tag.fieldValue, '-');
+    console.log('tag:', tag, latinTag);
+    createPage({
+      path: `/be/tags/${latinTag}/`,
+      component: `${tagPageTemplate}`,
+      context: {
+        tag: tag.fieldValue,
+        latinTag
+      },
+    })
+  })
   } catch (ex) {
     console.error(ex);
   }

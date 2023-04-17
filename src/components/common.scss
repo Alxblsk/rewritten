@@ -140,6 +140,10 @@ blockquote {
   flex: 1;
 }
 
+.page-content-inner {
+  width: inherit;
+}
+
 .page-footer {
   position: relative;
   margin-top: 30px;
@@ -199,5 +203,20 @@ blockquote {
     z-index: -1;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+  }
+}
+
+@media screen and (min-width: 801px){
+  .page-container {
+    max-width: 800px;
+  }
+
+  .page-content {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .page-side {
+    width: 160px;
   }
 }
