@@ -206,6 +206,10 @@ blockquote {
   }
 }
 
+.page-side {
+  margin-top: 40px;
+}
+
 @media screen and (min-width: 801px){
   .page-container {
     max-width: 800px;
@@ -217,6 +221,7 @@ blockquote {
   }
 
   .page-side {
+    margin-top: 0;
     width: 160px;
   }
 }
