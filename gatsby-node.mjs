@@ -5,9 +5,8 @@
  */
 import { resolve } from 'path';
 import { createFilePath } from 'gatsby-source-filesystem';
-import Translit from 'cyrillic-to-translit-js';
 
-const translit = new Translit();
+import { latinize } from 't13n';
 
 /**
  * @type {import('gatsby').GatsbyNode['createPages']}
@@ -73,8 +72,8 @@ export async function createPages({ graphql, actions }) {
 
   // Make tag pages
   tags.forEach(tag => {
-    const latinTag = translit.transform(tag.fieldValue, '-');
-    console.log('tag:', tag, latinTag);
+    const latinTag = latinize(tag.fieldValue, { safeOnly: true });
+    
     createPage({
       path: `/be/tags/${latinTag}/`,
       component: `${tagPageTemplate}`,

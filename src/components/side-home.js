@@ -1,10 +1,7 @@
 import * as React from "react"
-import Translit from 'cyrillic-to-translit-js';
 
+import { latinizeTag } from './utils/latinize.js';
 import './side-home.scss';
-
-
-const translit = new Translit();
 
 const SideHome = (props) => {
     const { categories } = props;
@@ -17,7 +14,7 @@ const SideHome = (props) => {
                 <ul className="tags-list">
                     {
                         tags.map(groupItem => {
-                            const latinTag = translit.transform(groupItem.tag, '-');
+                            const latinTag = latinizeTag(groupItem.tag);
                             return (
                                 <li className="tags-item" data-count={groupItem.totalCount}>
                                     #<a href={`/be/tags/${latinTag}/`}>{groupItem.tag}</a>
