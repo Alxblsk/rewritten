@@ -72,7 +72,7 @@ export async function createPages({ graphql, actions }) {
 
   // Make tag pages
   tags.forEach(tag => {
-    const latinTag = latinize(tag.fieldValue, { safeOnly: true });
+    const latinTag = latinize(tag.fieldValue, { safeOnly: true, language: "be", style: "lacinka" });
     
     createPage({
       path: `/be/tags/${latinTag}/`,
