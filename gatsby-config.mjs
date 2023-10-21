@@ -25,6 +25,7 @@ const siteMetadata = {
 const config = {
   siteMetadata,
   plugins: [
+    'gatsby-plugin-netlify',
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
